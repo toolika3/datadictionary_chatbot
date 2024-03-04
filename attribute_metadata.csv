@@ -1,0 +1,93 @@
+Attribute Reg ID,Physical Attribute Name,Logical Attribute Name,Description,Dataset Reg ID,Sequence Number,DataType,Length Precision,Scale,Format
+,geo_division,Geography,"Different geographic level participant demographic data such as national, Regional or state",DSET000111,1,NUMBER,,,
+,dem_cat,Demographic category,"Categories such as race,ethinicity,sex or socialeconnomic status",DSET000111,2,VARCHAR,,,
+,dem_group,Demographic group,"Hispanic,Native,White, Others for population division analysis",DSET000111,3,VARCHAR,,,
+,time_period,Population comparison time period,Time period when the Census data is collected for analysis,DSET000111,4,VARCHAR,,,
+,program_office,Americorps prog office,"Different volunteer programs offered by Americorps such as MemberProg, NCCC,Seniors(All)",DSET000111,5,VARCHAR,,,
+,service_region,Volunteer program region,Various regions across USA,DSET000111,6,VARCHAR,,,
+,State,Volunteer program state,Various states across USA,DSET000111,7,VARCHAR,,,
+,census_pop_tot,Census Total Population ,Total census level population,DSET000111,8,NUMBER,,,
+,count_tot,Total Count,AmeriCorps total count,DSET000111,9,NUMBER,,,
+,count_dem_grp,Demographic Group Count,Demographic group level count,DSET000111,10,NUMBER,,,
+,odds_ratio_estimate,Odds ratio estimate for pop comparison,Odds ratio estimate for pop comparison,DSET000111,11,NUMBER,,,
+,representation,Representation category,"Overpresentation,UnderPresentation, No Observable Difference",DSET000111,12,VARCHAR,,,
+,mag_range_size,Magnitude range size,Value in numbers,DSET000111,13,NUMBER,,,
+,Significance,Results significance,Results Validity,DSET000111,14,VARCHAR,,,
+,cscore,Credit Score,Credit score at the time of mortgage origination,DSET000112,1,NUMBER,,,
+,frst_dat_fix,First Payment Date,Date when first mortgage payment was made,DSET000112,2,TIMESTAMP,,,
+,frst_homebyer_flg,First Time Homebuyer Flag,Flag set to 1 if the buyer is first time home buyer else 0,DSET000112,3,VARCHAR,,,
+,maturity_dt,Maturity Date,Mortgage Maturity date,DSET000112,4,TIMESTAMP,,,
+,MSA_Code,Metropolitan Statistical Area (MSA) Or Metropolitan Division,MSA values from the 2010 census and 2013 census were applied to all loans in the Single Family Loan-Level Dataset.,DSET000112,5,NUMBER,,,
+,MI_percent,Mortgage Insurance Percentage (MI %),Mortgage Insurance percent during Origination,DSET000112,6,NUMBER,,,
+,num_units,Number of Units,"Properties’s number of units.1-4 for Single family, more for Co-Op, Condo etc ",DSET000112,7,NUMBER,,,
+,occ_status,Occupancy Status,"Denotes whether the mortgage type is owner occupied, second home, or investment property.",DSET000112,8,VARCHAR,,,
+,CLTV,Original Combined Loan-to-Value (CLTV),Original Combined Loan-to-Value during Origination,DSET000112,9,NUMBER,,,
+,Orig_DTI,Original Debt-to-Income (DTI) Ratio,Debt to Income ratio at the time of origination,DSET000112,10,NUMBER,,,
+,Orig_UPB,Original UPB,Unpaid Principal Balance at the time of origination,DSET000112,11,NUMBER,,,
+,OLTV,Original Loan-to-Value (LTV),Loan to value at the time of origination,DSET000112,12,NUMBER,,,
+,Orig_IR,Original Interest Rate,Loan’s Interest Rate at the time of Origination,DSET000112,13,NUMBER,,,
+,Orig_Channel,Channel,"Disclosure indicates whether a Broker or Correspondent, as those terms are defined below, originated or was involved in the origination of the mortgage loan. If a Third Party Origination is applicable, but the Seller does not specify Broker or Correspondent, the disclosure will indicate “TPO Not Specified”.",DSET000112,14,VARCHAR,,,
+,PPM_Flag,Prepayment Penalty Mortgage (PPM) Flag,"Denotes whether the mortgage is a PPM. A PPM is a mortgage with respect to which the borrower is, or at any time has been, obligated to pay a penalty in the event of certain repayments of principal.",DSET000112,15,VARCHAR,,,
+,AMI_Type,Amortization Type (Formerly Product Type),Amortization Type (Formerly Product Type),DSET000112,16,VARCHAR,,,
+,Prop_state,Property State,State the originated mortgage belongs to,DSET000112,17,VARCHAR,,,
+,Prop_Type,Property Type,"Denotes whether the property type secured by the mortgage is a condominium, leasehold, planned unit development (PUD), cooperative share, manufactured home, or Single Family home.",DSET000112,18,VARCHAR,,,
+,Zip_Code,Postal Code,Zip code at origination,DSET000112,19,NUMBER,,,
+,Loan_Seq_Num,Loan Sequence Number,Loan Sequence Number. Proxy for the loan number,DSET000112,20,VARCHAR,,,PYYQnXXXXXXX
+,Loan_Purpose,Loan Purpose,"Indicates whether the mortgage loan is a Cash-out Refinance mortgage, No Cash-out Refinance mortgage, or a Purchase mortgage.",DSET000112,21,VARCHAR,,,
+,Orig_Loan_Term,Original Loan Term,Number of terms for the originated mortgage,DSET000112,22,NUMBER,,,
+,Num_borrower,Number of Borrowers,The number of Borrower(s) who are obligated to repay the mortgage note secured by the mortgaged property. Disclosure denotes only whether there is one borrower or more than one borrower associated with the mortgage note.,DSET000112,23,NUMBER,,,
+,Seller_Name,Seller Name,Seller Name,DSET000112,24,VARCHAR,,,
+,Servicer_Name,Servicer Name,Servicer Name,DSET000112,25,VARCHAR,,,
+,SConf_Flag,Super Conforming Flag,Super Conforming Flag,DSET000112,26,VARCHAR,,,
+,Pre-HARP_Loan_Seq_Num,Pre-HARP Loan Sequence Number,Pre-HARP Loan Sequence Number,DSET000112,27,VARCHAR,,,PYYQnXXXXXXX
+,Prog_Indicator,Program Indicator,Type of program the loan is originated from,DSET000112,28,VARCHAR,,,
+,HARP_Indicator,HARP Indicator,Denotes whether the mortgage is Home Affordable Refinance Program Loan,DSET000112,29,VARCHAR,,,
+,Prop_Valu_Method,Property Valuation Method,Property Valuation Method,DSET000112,30,NUMBER,,,
+,IO_Indicator,Interest Only (I/O) Indicator,Interest Only Loan Type,DSET000112,31,VARCHAR,,,
+,MIC_Inidicator,Mortgage Insurance Cancellation Indicator,Mortgage Insurance Cancellation Indicator,DSET000112,32,VARCHAR,,,
+,Loan_Seq_Num,Loan Sequence Number,Loan Sequence Number. Proxy for the loan number,DSET000113,1,VARCHAR,,,PYYQnXXXXXXX
+,rpt_per,Monthly Reporting Period,Denotes monthly reporting period for performance dataset,DSET000113,2,TIMESTAMP,,,
+,curr_upb,Current Actual UPB,UPB reported with the monthly performance data update at loan level,DSET000113,3,NUMBER,,,
+,curr_loan_dlq_status,Current Loan Delinquency Status,Deliquency status with the monthly performance data. Update,DSET000113,4,VARCHAR,,,
+,loan_age,Loan Age,Difference in months between loans first payment date and current period of loan plus one month,DSET000113,5,NUMBER,,,
+,mnths_to_maturity,Remaining Months to Legal Maturity,"First payment to maturity. For modification, from loan modification to new maturity date",DSET000113,6,NUMBER,,,
+,defect_settlement_date,Defect Settlement Date,"Replacement of Repurchase Flag. Month and year during which the defect occurred 
+",DSET000113,7,TIMESTAMP,,,
+,mod_flag,Modification Flag,"A Y/N flag will be disclosed for every modified loan, to denote if the terms of modification agreement call for note rate to increase over time.",DSET000113,8,VARCHAR,,,
+,zb_code,Zero Balance Code,"A code indicating the reason the loan's balance was reduced to zero. 01 = Prepaid or Matured 03 = Foreclosure, 06 = Repurchase prior to property Disposition, 09 = REO Disposition, Space(2)=Not Applicable
+",DSET000113,9,NUMBER,,,
+,zb_effective_date,Zero Balance Effective Date,Date when loan balance was reduced to zero,DSET000113,10,TIMESTAMP,,,
+,curr_int_rate,Current Interest Rate,Interest Rate with monthly performance data reporting period,DSET000113,11,NUMBER,,,
+,curr_def_UPB,Current Deferred UPB,The current non-interest bearing UPB of the modified mortgage.,DSET000113,12,NUMBER,,,
+,DDLPI_Date,Due Date of Last Paid Installment (DDLPI),"The due date that the loan’s scheduled principal and interest is paid through, regardless of when the installment payment was actually made.",DSET000113,13,TIMESTAMP,,,
+,mi_recovery,MI Recoveries, Mortgage Insurance Recoveries are proceeds received by Freddie Mac in the event of credit losses. These proceeds are based on claims under a mortgage insurance policy.,DSET000113,14,NUMBER,,,
+,net_sales_proc,Net Sales Proceeds,The amount remitted to Freddie Mac resulting from a property disposition once allowable selling expenses have been deducted from the gross sales proceeds of the property.,DSET000113,15,VARCHAR,,,
+,non_mi_recovery,Non MI Recoveries,"Non-MI Recoveries are proceeds received by Freddie Mac in the event of credit losses based on claims under a pool insurance policy, recourse, and indemnifications",DSET000113,16,NUMBER,,,
+,gse_costs,Expenses,"Expenses will include allowable expenses that Freddie Mac bears in the process of acquiring, maintaining and or disposing a property (excluding selling expenses, which are excluded from gross sales proceeds to derive net sales proceeds).",DSET000113,17,NUMBER,,,
+,legal_cost,Legal Costs,The amount of legal cost associated with the property( not including Net Sale Proceeds),DSET000113,18,NUMBER,,,
+,maintanance_cost,Maintenance and Preservation Costs,"The amount of maintenance, preservation, and repair costs, including but not limited to property inspection, homeowner’s association, utilities, and REO management, that is associated with the sale of a property(not including net sale proceed)
+",DSET000113,19,NUMBER,,,
+,tax_cost,Taxes and Insurance,The amount of taxes and insurance owed that are associated with the sale of a property (but not included in Net Sale Proceeds.,DSET000113,20,NUMBER,,,
+,misc_cost,Miscellaneous Expenses,Misc expenses associated with sale of the property,DSET000113,21,NUMBER,,,
+,actual_loss,Actual Loss Calculation,"Actual Loss is calculated using the below approach for loans with Zero Balance Codes of 02, 03, 09, and 15:
+Actual Loss = (Zero Balance Removal UPB – Net Sale Proceeds) +
+Delinquent Accrued Interest - Expenses – MI Recoveries – Non MI
+",DSET000113,22,NUMBER,,,
+,mod_cost,Modification Cost,"The cumulative modification cost amount calculated when Freddie Mac determines such mortgage loan has experienced a rate modification event or a UPB forbearance.
+This amount will be calculated on a monthly basis beginning with the first reporting period a modification event is reported and disclosed in the last performance record.
+",DSET000113,23,NUMBER,,,
+,step_mod_flag,Step Modification Flag,"A Y/N flag will be disclosed for every modified loan in their current period of modification, to denote if the terms of modification agreement call for note rate to increase over time",DSET000113,24,VARCHAR,,,
+,deffered_payment_plan,Deferred Payment Plan,"A flag indicating a loan has been granted a Payment Deferral in the current or prior perio
+",DSET000113,25,VARCHAR,,,
+,Eltv,Estimated Loan-to-Value (ELTV),"A ratio indicating current LTV based on the estimated current value of the property obtained through Freddie Mac’s Automated Valuation Model (AVM)
+",DSET000113,26,NUMBER,,,
+,zb_removal_upb,Zero Balance Removal UPB,"The amount of total UPB remaining on the loan immediately prior to the application of the Zero Balance Code.
+",DSET000113,27,NUMBER,,,
+,dlq_acc_interest,Delinquent Accrued Interest,"The amount of delinquent interest owed by the borrower at the time of default. This field will only be populated for Zero Balance Codes 02, 03, 09, & 15.
+",DSET000113,28,NUMBER,,,
+,dlq_disaster,Delinquency Due to Disaster,A fly indicating that servicer has reported disaster related hardships as defined in Freddie Mac’s Seller/Servicer Guide,DSET000113,29,VARCHAR,,,
+,borrower_ass_status_code,Borrower Assistance Status Code,"Regardless of delinquency status, the type of assistance plan that the borrower is enrolled in that provides temporary mortgage payment relief or an opportunity to cure a mortgage delinquency over a defined period.
+",DSET000113,30,VARCHAR,,,
+,curr_mod_cost,Current Month Modification Cost,"The current month modification cost amount calculated when Freddie Mac determines such mortgage loan has experienced a rate modification, principal forbearance, or Payment Deferral. This amount will be calculated on a monthly basis beginning with the first reporting period such modification event is reported and disclosed until the last performance record.
+",DSET000113,31,NUMBER,,,
+,int_upb,Interest Bearing UPB,The current interest bearing UPB of the modified mortgage,DSET000113,32,NUMBER,,,
