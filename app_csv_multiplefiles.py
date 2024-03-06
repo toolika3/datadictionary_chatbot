@@ -73,7 +73,7 @@ vectordb.save_local(DB_FAISS_PATH) # saved the vector embeddings locally. IN FUT
 # Top_P - The percent of most likely candidates that the model considers for next toen. If top_p<0.1, then the model selects top 10% of the probability distribution of tokens that could be next in sequence
 # Top_K - The # of most likely candidates that the model considers for next token. If top_k=400, then model selects 400 most probable tokens that could be next in sequence
 # mak_tokens_to_sample - To configure max number of tokens to before stopping
-#Claudes parameter info for default, min, max is below
+# Claude's parameter info for default, min, max is below
 # Temperature 0.5,0,4096
 # top_p 1,0,1
 # top_k 250,0,500
