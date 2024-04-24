@@ -31,8 +31,8 @@ def create_vector_db():
     #Assuming data is a list of objects and each object has a page_content and metadata attribute
     #docs_as_str = [doc.page_content for doc in data] # Extract the page_content from document object
     text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1500,
-            chunk_overlap=200,
+            chunk_size=2500,
+            chunk_overlap=100,
             length_function=len
             #is_separator_regex=False
             )
