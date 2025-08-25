@@ -240,46 +240,42 @@ time_col = "Resolve time"  # in seconds
 # --- Read CSV ---
 df = pd.read_csv(input_file)
 
-# --- Convert date column safely ---
-df[date_col] = df[date_col].astype(str).str.strip()  # Ensure string, remove spaces
-
-def safe_parse(date_str):
-    try:
-        return parser.parse(date_str, dayfirst=False)  # set dayfirst=True if needed
-    except (ValueError, TypeError):
-        return pd.NaT
-
-df[date_col] = df[date_col].apply(safe_parse)
-
-# Drop rows with invalid dates
+# --- Safe date parsing ---
+df[date_col] = df[date_col].astype(str).str.strip()
+df[date_col] = df[date_col].apply(lambda x: parser.parse(x, dayfirst=False) if x else pd.NaT)
 df = df.dropna(subset=[date_col])
 
-# --- Convert Resolve time to numeric hours ---
+# --- Convert resolve time to numeric minutes ---
 df[time_col] = pd.to_numeric(df[time_col], errors='coerce')
 df = df.dropna(subset=[time_col])
-df["Resolve Hours"] = df[time_col] / 3600
+df["Resolve Minutes"] = df[time_col] / 60  # convert seconds → minutes
 
 # --- Extract quarter ---
 df["Quarter"] = df[date_col].dt.to_period("Q")
 
-# --- Calculate average resolve hours per quarter ---
-avg_resolve = df.groupby("Quarter")["Resolve Hours"].mean().reset_index()
+# --- Average resolve minutes per quarter ---
+avg_resolve = df.groupby("Quarter")["Resolve Minutes"].mean().reset_index()
 
 # --- Plot ---
-plt.figure(figsize=(10, 6))
-plt.plot(avg_resolve["Quarter"].astype(str), avg_resolve["Resolve Hours"], marker='o', color='blue', linewidth=2)
+fig, ax = plt.subplots(figsize=(10, 6))
+x_labels = avg_resolve["Quarter"].astype(str)
+y_values = avg_resolve["Resolve Minutes"]
 
-# Annotate each point with value
-for i, (quarter, hours) in enumerate(zip(avg_resolve["Quarter"].astype(str), avg_resolve["Resolve Hours"])):
-    plt.text(i, hours + 0.1, f"{hours:.2f}", ha='center', va='bottom', fontsize=9, color='blue')
+line = ax.plot(x_labels, y_values, marker='o', color='blue', linewidth=2)
 
-plt.xlabel("Quarter")
-plt.ylabel("Average Resolve Time (Hours)")
-plt.title("Average Resolution Time per Quarter")
-plt.grid(True)
+# Annotate each point
+for x, y in zip(x_labels, y_values):
+    ax.annotate(f"{y:.1f}", xy=(x, y), xytext=(0, 5), textcoords='offset points',
+                ha='center', va='bottom', fontsize=9, color='blue')
+
+ax.set_xlabel("Quarter")
+ax.set_ylabel("Average Resolve Time (Minutes)")
+ax.set_title("Average Resolution Time per Quarter")
+ax.grid(True)
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
 
 
 
