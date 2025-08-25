@@ -170,3 +170,60 @@ for i, (count, percent) in enumerate(zip(summary_df["Count"], summary_df["Percen
 plt.title("Root Cause Reasons (Reassignment Count = 1, 2, or 4)")
 plt.tight_layout()
 plt.show()
+
+
+### Assignment group detail with significantly high value
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import textwrap
+
+# --- User Inputs ---
+input_file = "input.csv"
+column_group = "Assignment Group Detail"
+percent_threshold = 5  # Only show groups >= 5% of total
+wrap_width = 30        # Wrap long labels
+
+# --- Read CSV ---
+df = pd.read_csv(input_file)
+
+# --- Filter non-blank values ---
+df = df[df[column_group].notna() & (df[column_group].astype(str).str.strip() != "")]
+
+# --- Count occurrences ---
+group_counts = df[column_group].value_counts()
+group_percent = (group_counts / group_counts.sum()) * 100
+
+# --- Combine into DataFrame ---
+summary_df = pd.DataFrame({
+    "Count": group_counts,
+    "Percent": group_percent
+})
+
+# --- Keep only significant groups ---
+summary_df = summary_df[summary_df["Percent"] >= percent_threshold].sort_values("Count", ascending=False)
+
+# --- Wrap labels ---
+summary_df.index = [textwrap.fill(label, wrap_width) for label in summary_df.index]
+
+# --- Plot horizontal bar chart ---
+fig, ax = plt.subplots(figsize=(12, 8))
+bars = ax.barh(summary_df.index, summary_df["Count"], color='skyblue')
+ax.set_xlabel("Number of Records")
+ax.set_ylabel("Assignment Group Detail")
+
+# Counts inside bars
+for bar in bars:
+    width = bar.get_width()
+    ax.text(width - (width*0.02), bar.get_y() + bar.get_height()/2,
+            f"{int(width)}", ha='right', va='center', fontsize=9, color='black')
+
+# Percent outside bars
+for i, (count, percent) in enumerate(zip(summary_df["Count"], summary_df["Percent"])):
+    ax.text(count + (summary_df["Count"].max() * 0.02),
+            i, f"{percent:.1f}%", color='red', fontsize=9, va='center', ha='left')
+
+plt.title(f"Significant Assignment Groups (>= {percent_threshold}% of total)")
+plt.tight_layout()
+plt.show()
+
