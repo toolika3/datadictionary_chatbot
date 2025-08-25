@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 # --- User Inputs ---
 input_file = "input.csv"
 column_asset = "Asset ID"
+percent_threshold = 5  # Show only assets with >= 5% of total
 
 # --- Read CSV ---
 df = pd.read_csv(input_file)
@@ -20,30 +21,32 @@ asset_counts = df[column_asset].value_counts()
 # --- Calculate percentage ---
 asset_percent = (asset_counts / asset_counts.sum()) * 100
 
-# --- Combine into one DataFrame for clarity ---
+# --- Combine into one DataFrame ---
 summary_df = pd.DataFrame({
     "Count": asset_counts,
     "Percent": asset_percent
 })
 
-print(summary_df)
+# --- Filter by threshold ---
+summary_df = summary_df[summary_df["Percent"] >= percent_threshold]
 
-# --- Plot Bar Graph ---
-plt.figure(figsize=(10, 6))
-plt.bar(summary_df.index.astype(str), summary_df["Count"])
-plt.title("Number of Records per Asset ID")
-plt.xlabel("Asset ID")
-plt.ylabel("Count")
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.show()
+# --- Sort for better visualization ---
+summary_df = summary_df.sort_values("Percent", ascending=False)
 
-# --- Plot Percentage Graph (Optional) ---
-plt.figure(figsize=(10, 6))
-plt.bar(summary_df.index.astype(str), summary_df["Percent"])
-plt.title("Percentage of Total per Asset ID")
-plt.xlabel("Asset ID")
-plt.ylabel("Percentage (%)")
-plt.xticks(rotation=45, ha='right')
+# --- Plot combined chart ---
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Bar chart for counts
+ax1.bar(summary_df.index.astype(str), summary_df["Count"], alpha=0.7)
+ax1.set_xlabel("Asset ID")
+ax1.set_ylabel("Count")
+ax1.tick_params(axis='x', rotation=45)
+
+# Secondary y-axis for percent
+ax2 = ax1.twinx()
+ax2.plot(summary_df.index.astype(str), summary_df["Percent"], color='red', marker='o')
+ax2.set_ylabel("Percent (%)")
+
+plt.title(f"Assets with >= {percent_threshold}% of Total")
 plt.tight_layout()
 plt.show()
