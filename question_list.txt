@@ -114,6 +114,7 @@ plt.show()
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import textwrap
 
 # --- User Inputs ---
 input_file = "input.csv"
@@ -122,7 +123,7 @@ reason1_col = "Reassignment reason"
 reason2_col = "Escalation reason"
 new_reason_col = "root cause reason"
 valid_counts = [1, 2, 4]
-percent_threshold = 0  # Show all reasons
+wrap_width = 30  # characters per line for wrapped labels
 
 # --- Read CSV ---
 df = pd.read_csv(input_file)
@@ -130,8 +131,7 @@ df = pd.read_csv(input_file)
 # --- Filter rows with specific Reassignment count ---
 df = df[df[reassign_col].isin(valid_counts)]
 
-# --- Create 'root cause reason' column ---
-df[new_reason_col] = df[reason1_col].fillna('') + df[reason2_col].fillna('')
+# --- Create 'root cause reason' column (correct logic) ---
 df[new_reason_col] = df.apply(
     lambda x: x[reason1_col] if pd.notna(x[reason1_col]) and x[reason1_col] != '' 
     else x[reason2_col],
@@ -140,8 +140,6 @@ df[new_reason_col] = df.apply(
 
 # --- Count occurrences per root cause reason ---
 reason_counts = df[new_reason_col].value_counts()
-
-# --- Calculate percentage ---
 reason_percent = (reason_counts / reason_counts.sum()) * 100
 
 # --- Combine into DataFrame ---
@@ -150,37 +148,35 @@ summary_df = pd.DataFrame({
     "Percent": reason_percent
 })
 
-# --- Filter by threshold (optional) ---
-summary_df = summary_df[summary_df["Percent"] >= percent_threshold]
-
 # --- Sort descending ---
 summary_df = summary_df.sort_values("Count", ascending=False)
 
-# --- Plot combined chart ---
-fig, ax1 = plt.subplots(figsize=(12, 7))
+# --- Wrap long labels ---
+summary_df.index = [textwrap.fill(label, wrap_width) for label in summary_df.index]
 
-# Bar chart for counts
-bars = ax1.bar(summary_df.index.astype(str), summary_df["Count"], alpha=0.7)
-ax1.set_xlabel("Root Cause Reason")
-ax1.set_ylabel("Number of Records")
-ax1.tick_params(axis='x', rotation=45, ha='right')
+# --- Plot horizontal bar chart ---
+fig, ax1 = plt.subplots(figsize=(10, 8))
+
+# Horizontal bars for counts
+bars = ax1.barh(summary_df.index, summary_df["Count"], color='skyblue')
+ax1.set_xlabel("Number of Records")
+ax1.set_ylabel("Root Cause Reason")
 
 # Add count labels on bars
 for bar in bars:
-    height = bar.get_height()
-    ax1.text(bar.get_x() + bar.get_width()/2, height, f"{int(height)}", 
-             ha='center', va='bottom', fontsize=9, color='black')
+    width = bar.get_width()
+    ax1.text(width + 1, bar.get_y() + bar.get_height()/2, f"{int(width)}",
+             ha='left', va='center', fontsize=9, color='black')
 
-# Secondary y-axis for percent
-ax2 = ax1.twinx()
-ax2.plot(summary_df.index.astype(str), summary_df["Percent"], color='red', marker='o')
-ax2.set_ylabel("Percent (%)")
+# Secondary axis for percent
+ax2 = ax1.twiny()
+ax2.plot(summary_df["Percent"], summary_df.index, color='red', marker='o')
+ax2.set_xlabel("Percent (%)")
 
 # Add percent labels at red points
-for i, (x, y) in enumerate(zip(summary_df.index.astype(str), summary_df["Percent"])):
-    ax2.text(i, y, f"{y:.1f}%", color='red', fontsize=9, ha='center', va='bottom')
+for i, (y, p) in enumerate(zip(summary_df.index, summary_df["Percent"])):
+    ax2.text(p + 0.5, i, f"{p:.1f}%", color='red', fontsize=9, va='center')
 
 plt.title("Root Cause Reasons (Reassignment Count = 1, 2, or 4)")
 plt.tight_layout()
 plt.show()
-
