@@ -227,3 +227,46 @@ plt.title(f"Significant Assignment Groups (>= {percent_threshold}% of total)")
 plt.tight_layout()
 plt.show()
 
+## Resolution time per quarter
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# --- User Inputs ---
+input_file = "input.csv"
+date_col = "Resolved date"
+time_col = "Resolve time"  # in seconds
+
+# --- Read CSV ---
+df = pd.read_csv(input_file)
+
+# --- Convert date column to datetime ---
+df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
+
+# Drop rows with invalid dates or missing resolve time
+df = df.dropna(subset=[date_col, time_col])
+
+# --- Convert resolve time from seconds to hours ---
+df["Resolve Hours"] = df[time_col] / 3600
+
+# --- Extract quarter (e.g., 2024-Q1) ---
+df["Quarter"] = df[date_col].dt.to_period("Q")
+
+# --- Calculate average resolve hours per quarter ---
+avg_resolve = df.groupby("Quarter")["Resolve Hours"].mean().reset_index()
+
+# --- Plot ---
+plt.figure(figsize=(10, 6))
+plt.plot(avg_resolve["Quarter"].astype(str), avg_resolve["Resolve Hours"], marker='o', color='blue', linewidth=2)
+
+# Annotate values on the trend line
+for i, (quarter, hours) in enumerate(zip(avg_resolve["Quarter"].astype(str), avg_resolve["Resolve Hours"])):
+    plt.text(i, hours + 0.1, f"{hours:.2f}", ha='center', va='bottom', fontsize=9, color='blue')
+
+plt.xlabel("Quarter")
+plt.ylabel("Average Resolve Time (Hours)")
+plt.title("Average Resolution Time per Quarter")
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
