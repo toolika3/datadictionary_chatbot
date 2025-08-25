@@ -85,10 +85,16 @@ summary_df = summary_df[summary_df["Percent"] >= percent_threshold]
 fig, ax1 = plt.subplots(figsize=(10, 6))
 
 # Bar chart for counts
-ax1.bar(summary_df.index.astype(str), summary_df["Count"], alpha=0.7)
+bars = ax1.bar(summary_df.index.astype(str), summary_df["Count"], alpha=0.7)
 ax1.set_xlabel("Reassignment Count")
 ax1.set_ylabel("Number of Records")
 ax1.tick_params(axis='x', rotation=45)
+
+# Add numbers on top of bars
+for bar in bars:
+    height = bar.get_height()
+    ax1.text(bar.get_x() + bar.get_width()/2, height, f"{int(height)}", 
+             ha='center', va='bottom', fontsize=9, color='black')
 
 # Secondary y-axis for percent
 ax2 = ax1.twinx()
