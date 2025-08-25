@@ -1,1 +1,49 @@
 1. List top 20 column names associated with UPB. Please include table that the columns originally belongs to. Dont use DSET ID in lieu of table . Include duplicates and look across all tables in the knowledgebase
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# --- User Inputs ---
+input_file = "input.csv"
+column_asset = "Asset ID"
+
+# --- Read CSV ---
+df = pd.read_csv(input_file)
+
+# --- Keep only rows where Asset ID is not blank ---
+df = df[df[column_asset].notna() & (df[column_asset].astype(str).str.strip() != "")]
+
+# --- Count occurrences per Asset ID ---
+asset_counts = df[column_asset].value_counts()
+
+# --- Calculate percentage ---
+asset_percent = (asset_counts / asset_counts.sum()) * 100
+
+# --- Combine into one DataFrame for clarity ---
+summary_df = pd.DataFrame({
+    "Count": asset_counts,
+    "Percent": asset_percent
+})
+
+print(summary_df)
+
+# --- Plot Bar Graph ---
+plt.figure(figsize=(10, 6))
+plt.bar(summary_df.index.astype(str), summary_df["Count"])
+plt.title("Number of Records per Asset ID")
+plt.xlabel("Asset ID")
+plt.ylabel("Count")
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# --- Plot Percentage Graph (Optional) ---
+plt.figure(figsize=(10, 6))
+plt.bar(summary_df.index.astype(str), summary_df["Percent"])
+plt.title("Percentage of Total per Asset ID")
+plt.xlabel("Asset ID")
+plt.ylabel("Percentage (%)")
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
