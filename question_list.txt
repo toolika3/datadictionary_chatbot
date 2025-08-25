@@ -51,6 +51,7 @@ plt.title(f"Assets with >= {percent_threshold}% of Total")
 plt.tight_layout()
 plt.show()
 
+## Reassignment count
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -93,6 +94,10 @@ ax1.tick_params(axis='x', rotation=45)
 ax2 = ax1.twinx()
 ax2.plot(summary_df.index.astype(str), summary_df["Percent"], color='red', marker='o')
 ax2.set_ylabel("Percent (%)")
+
+# Add percent labels at red points
+for i, (x, y) in enumerate(zip(summary_df.index.astype(str), summary_df["Percent"])):
+    ax2.text(i, y, f"{y:.1f}%", color='red', fontsize=9, ha='center', va='bottom')
 
 plt.title(f"Records by Reassignment Count (>= {percent_threshold}% of Total)")
 plt.tight_layout()
