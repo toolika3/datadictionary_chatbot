@@ -50,3 +50,50 @@ ax2.set_ylabel("Percent (%)")
 plt.title(f"Assets with >= {percent_threshold}% of Total")
 plt.tight_layout()
 plt.show()
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# --- User Inputs ---
+input_file = "input.csv"
+column_reassign = "Reassignment count"
+percent_threshold = 1  # Show only values >= 1% of total
+
+# --- Read CSV ---
+df = pd.read_csv(input_file)
+
+# --- Keep only rows where Reassignment Count > 0 ---
+df = df[df[column_reassign].notna() & (df[column_reassign] > 0)]
+
+# --- Count occurrences per Reassignment Count ---
+reassign_counts = df[column_reassign].value_counts().sort_index()
+
+# --- Calculate percentage ---
+reassign_percent = (reassign_counts / reassign_counts.sum()) * 100
+
+# --- Combine into one DataFrame ---
+summary_df = pd.DataFrame({
+    "Count": reassign_counts,
+    "Percent": reassign_percent
+})
+
+# --- Filter by threshold ---
+summary_df = summary_df[summary_df["Percent"] >= percent_threshold]
+
+# --- Plot combined chart ---
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Bar chart for counts
+ax1.bar(summary_df.index.astype(str), summary_df["Count"], alpha=0.7)
+ax1.set_xlabel("Reassignment Count")
+ax1.set_ylabel("Number of Records")
+ax1.tick_params(axis='x', rotation=45)
+
+# Secondary y-axis for percent
+ax2 = ax1.twinx()
+ax2.plot(summary_df.index.astype(str), summary_df["Percent"], color='red', marker='o')
+ax2.set_ylabel("Percent (%)")
+
+plt.title(f"Records by Reassignment Count (>= {percent_threshold}% of Total)")
+plt.tight_layout()
+plt.show()
