@@ -365,7 +365,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def plot_knowledge_distribution(csv_path, reassignment_col="Reassignment count", 
-                                knowledge_col="Knowledge name"):
+                                knowledge_col="Knowledge name", top_n=10):
     # Load CSV
     df = pd.read_csv(csv_path)
 
@@ -375,30 +375,36 @@ def plot_knowledge_distribution(csv_path, reassignment_col="Reassignment count",
     # Replace blank Knowledge name with "No KA used"
     df_filtered[knowledge_col] = df_filtered[knowledge_col].fillna("").replace("", "No KA used")
 
-    # Count frequency
-    knowledge_counts = df_filtered[knowledge_col].value_counts(ascending=True)
+    # Count frequency and sort descending to get top N
+    knowledge_counts = df_filtered[knowledge_col].value_counts(ascending=False)
     knowledge_percent = (knowledge_counts / knowledge_counts.sum()) * 100
+
+    # Limit to top N categories
+    if top_n:
+        knowledge_counts = knowledge_counts.head(top_n)
+        knowledge_percent = knowledge_percent.head(top_n)
+
+    # Sort ascending for better visualization (small to large)
+    knowledge_counts = knowledge_counts.sort_values(ascending=True)
+    knowledge_percent = knowledge_percent.loc[knowledge_counts.index]
 
     # Plot
     plt.figure(figsize=(12, 6))
-    bars = plt.bar(knowledge_counts.index, knowledge_counts.values, color='skyblue')
+    bars = plt.barh(knowledge_counts.index, knowledge_counts.values, color='skyblue')
 
-    plt.xlabel('Knowledge Name')
-    plt.ylabel('Number of Tickets')
-    plt.title('Knowledge Name Distribution (Filtered by Reassignment Count = 1)')
-    plt.xticks(rotation=45, ha='right')
+    plt.xlabel('Number of Tickets')
+    plt.ylabel('Knowledge Name')
+    plt.title(f'Knowledge Name Distribution (Top {top_n}, Reassignment Count = 1)')
 
-    # Add count and percent labels above bars
-    for idx, value in enumerate(knowledge_counts.values):
-        percent_value = knowledge_percent.values[idx]
-        plt.text(idx, value + (0.01 * knowledge_counts.max()), 
-                 f'{value}\n({percent_value:.1f}%)', 
-                 ha='center', va='bottom', fontsize=8)
+    # Add labels to bars
+    for idx, (value, percent) in enumerate(zip(knowledge_counts.values, knowledge_percent.values)):
+        plt.text(value + 0.5, idx, f'{value} ({percent:.1f}%)', va='center', fontsize=8)
 
     plt.tight_layout()
-    plt.subplots_adjust(bottom=0.25, top=0.9)  # Prevent label cutoff
+    plt.subplots_adjust(left=0.35, right=0.95)
     plt.show()
 
 # Example usage:
-# plot_knowledge_distribution("tickets.csv")
+# plot_knowledge_distribution("tickets.csv", top_n=15)
+
 
