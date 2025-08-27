@@ -369,7 +369,7 @@ def plot_knowledge_distribution(csv_path, reassignment_col="Reassignment count",
     # Load CSV
     df = pd.read_csv(csv_path)
 
-    # Filter rows where reassignment count == 1
+ # Filter rows where reassignment count == 1
     df_filtered = df[df[reassignment_col] == 1].copy()
 
     # Replace blank Knowledge name with "No KA used"
@@ -384,27 +384,26 @@ def plot_knowledge_distribution(csv_path, reassignment_col="Reassignment count",
         knowledge_counts = knowledge_counts.head(top_n)
         knowledge_percent = knowledge_percent.head(top_n)
 
-    # Sort ascending for better visualization (small to large)
+    # Sort ascending for better visualization
     knowledge_counts = knowledge_counts.sort_values(ascending=True)
     knowledge_percent = knowledge_percent.loc[knowledge_counts.index]
 
-    # Plot
+    # Wrap labels
+    wrapped_labels = [textwrap.fill(label, wrap_width) for label in knowledge_counts.index]
+
+    # Plot horizontal bar chart
     plt.figure(figsize=(12, 6))
-    bars = plt.barh(knowledge_counts.index, knowledge_counts.values, color='skyblue')
+    bars = plt.barh(wrapped_labels, knowledge_counts.values, color='skyblue')
 
     plt.xlabel('Number of Tickets')
     plt.ylabel('Knowledge Name')
     plt.title(f'Knowledge Name Distribution (Top {top_n}, Reassignment Count = 1)')
 
-    # Add labels to bars
+    # Add count and percent labels
     for idx, (value, percent) in enumerate(zip(knowledge_counts.values, knowledge_percent.values)):
         plt.text(value + 0.5, idx, f'{value} ({percent:.1f}%)', va='center', fontsize=8)
 
     plt.tight_layout()
     plt.subplots_adjust(left=0.35, right=0.95)
     plt.show()
-
-# Example usage:
-# plot_knowledge_distribution("tickets.csv", top_n=15)
-
 
