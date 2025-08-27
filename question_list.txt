@@ -359,3 +359,46 @@ plt.title(f"Significant '{column_ks}' Values (>= {percent_threshold}% of total)"
 plt.tight_layout()
 plt.show()
 
+
+# KA usage by Reassignment count
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def plot_knowledge_distribution(csv_path, reassignment_col="Reassignment count", 
+                                knowledge_col="Knowledge name"):
+    # Load CSV
+    df = pd.read_csv(csv_path)
+
+    # Filter rows where reassignment count == 1
+    df_filtered = df[df[reassignment_col] == 1].copy()
+
+    # Replace blank Knowledge name with "No KA used"
+    df_filtered[knowledge_col] = df_filtered[knowledge_col].fillna("").replace("", "No KA used")
+
+    # Count frequency
+    knowledge_counts = df_filtered[knowledge_col].value_counts(ascending=True)
+    knowledge_percent = (knowledge_counts / knowledge_counts.sum()) * 100
+
+    # Plot
+    plt.figure(figsize=(12, 6))
+    bars = plt.bar(knowledge_counts.index, knowledge_counts.values, color='skyblue')
+
+    plt.xlabel('Knowledge Name')
+    plt.ylabel('Number of Tickets')
+    plt.title('Knowledge Name Distribution (Filtered by Reassignment Count = 1)')
+    plt.xticks(rotation=45, ha='right')
+
+    # Add count and percent labels above bars
+    for idx, value in enumerate(knowledge_counts.values):
+        percent_value = knowledge_percent.values[idx]
+        plt.text(idx, value + (0.01 * knowledge_counts.max()), 
+                 f'{value}\n({percent_value:.1f}%)', 
+                 ha='center', va='bottom', fontsize=8)
+
+    plt.tight_layout()
+    plt.subplots_adjust(bottom=0.25, top=0.9)  # Prevent label cutoff
+    plt.show()
+
+# Example usage:
+# plot_knowledge_distribution("tickets.csv")
+
