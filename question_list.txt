@@ -407,3 +407,52 @@ def plot_knowledge_distribution(csv_path, reassignment_col="Reassignment count",
     plt.subplots_adjust(left=0.35, right=0.95)
     plt.show()
 
+
+
+
+import pandas as pd
+
+def summarize_resolve_time(csv_path, date_col="Created", time_col="resolve_time"):
+    # Load data
+    df = pd.read_csv(csv_path)
+
+    # Ensure datetime conversion
+    df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
+
+    # Drop rows with invalid dates or missing resolve_time
+    df = df.dropna(subset=[date_col, time_col])
+
+    # Ensure numeric resolve time
+    df[time_col] = pd.to_numeric(df[time_col], errors='coerce')
+
+    # Create Quarter column
+    df['Quarter'] = df[date_col].dt.to_period('Q')
+
+    # Group by quarter and get min, max, mean, count
+    summary = df.groupby('Quarter')[time_col].agg(['min', 'max', 'mean', 'count']).reset_index()
+
+    # Create buckets (2-3 based on min/max ranges)
+    def bucket(value, q_min, q_max):
+        # Divide into 3 buckets: Low, Medium, High
+        range_size = (q_max - q_min) / 3
+        if value <= q_min + range_size:
+            return "Low"
+        elif value <= q_min + 2 * range_size:
+            return "Medium"
+        else:
+            return "High"
+
+    df['Bucket'] = df.groupby('Quarter')[time_col].transform(
+        lambda x: [bucket(v, x.min(), x.max()) for v in x]
+    )
+
+    # Bucket summary: count per bucket and avg resolve time per quarter
+    bucket_summary = df.groupby(['Quarter', 'Bucket'])[time_col].agg(['count', 'mean']).reset_index()
+
+    return summary, bucket_summary
+
+# Example usage
+# summary_stats, bucket_stats = summarize_resolve_time("tickets.csv")
+# print(summary_stats)
+# print(bucket_stats)
+
