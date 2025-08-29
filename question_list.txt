@@ -456,3 +456,46 @@ def summarize_resolve_time(csv_path, date_col="Created", time_col="resolve_time"
 # print(summary_stats)
 # print(bucket_stats)
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import textwrap
+
+def plot_knowledge_for_project_creation(csv_path,
+                                        category_col="category",
+                                        knowledge_col="Knowledge name",
+                                        filter_value="Project Creation Request",
+                                        wrap_width=20):
+    # Load CSV
+    df = pd.read_csv(csv_path)
+
+    # Filter for specific category
+    df_filtered = df[df[category_col] == filter_value].copy()
+
+    # Handle blanks in Knowledge name
+    df_filtered[knowledge_col] = df_filtered[knowledge_col].fillna("").replace("", "No KA used")
+
+    # Count and percentage
+    knowledge_counts = df_filtered[knowledge_col].value_counts()
+    knowledge_percent = (knowledge_counts / knowledge_counts.sum()) * 100
+
+    # Wrap long labels
+    wrapped_labels = [textwrap.fill(label, wrap_width) for label in knowledge_counts.index]
+
+    # Plot
+    plt.figure(figsize=(12, 6))
+    bars = plt.barh(wrapped_labels, knowledge_counts.values, color='skyblue')
+
+    plt.xlabel('Number of Tickets')
+    plt.ylabel('Knowledge Name')
+    plt.title(f'Knowledge Name Distribution for {filter_value}')
+
+    # Add labels (count and percent)
+    for idx, (value, percent) in enumerate(zip(knowledge_counts.values, knowledge_percent.values)):
+        plt.text(value + 0.5, idx, f'{value} ({percent:.1f}%)', va='center', fontsize=8)
+
+    plt.tight_layout()
+    plt.subplots_adjust(left=0.35, right=0.95)
+    plt.show()
+
+# Example usage:
+# plot_knowledge_for_project_creation("tickets.csv")
